@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from "react-redux";
+import UserRegistration from "./components/UserRegistration";
+import Error from "./components/Error";
+import store from "./utils/store";
+import UserDataContainer from "./components/UserDataContainer";
+import { Outlet, createBrowserRouter } from "react-router-dom";
+import LoginForm from "./components/LoginForm";
+import Header from "./components/Header";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className="">
+        <Header />
+        <Outlet />
+      </div>
+    </Provider>
   );
-}
+};
 
-export default App;
+const AppRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: "/",
+        element: <UserRegistration />,
+      },
+      {
+        path: "/login",
+        element: <LoginForm />,
+      },
+      {
+        path: "/user-container",
+        element: <UserDataContainer />,
+      },
+    ],
+  },
+]);
+
+export default AppRouter;
